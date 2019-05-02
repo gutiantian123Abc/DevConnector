@@ -7,5 +7,9 @@ const app = express();
 //connectDB
 connectDB();
 
+
+//Routes
+app.use('/api/users', require('./routes/api/users'));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server up and running on port ${PORT} !`));
