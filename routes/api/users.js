@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const gravatar = require('gravatar');
 const { check, validationResult } = require('express-validator/check');
+const bcrypt = require('bcryptjs');
 const User = require('../../models/User');
+const jwt = require('jsonwebtoken');
+const keys = require('../../config/keys');
 
 // @route   GET api/users
 // @desc    Register User
@@ -15,7 +19,7 @@ router.post('/', [
 ], async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errors: errors.array() });
     }
 
     const { name, email, password } = req.body;
@@ -24,39 +28,51 @@ router.post('/', [
         let user = await User.findOne({ email });
 
         if(user) {
-            res.status(400).json({ errors: [{ msg: 'User already exists'}]})
+            return res.status(400).json({ errors: [{ msg: 'User already exists'}]})
         }
 
-        res.send('User Route')
+        const avatar = gravatar.url(email, {
+            s: 200,
+            r: 'pg',
+            d: 'mm'
+        });
+
+        user = new User({
+            name,
+            email,
+            avatar,
+            password
+        });
+
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+        await user.save();
+
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+
+        jwt.sign(
+            payload,
+            keys.jwtSecret,
+            {
+                expiresIn: 360000
+            },
+            (err, token) => {
+                if(err) {
+                    throw err;
+                }else {
+                    res.json(token);
+                }
+            }
+        );
 
     }catch(err) {
         console.log(err.message);
         res.status(500).send('Server error');
     }
-
-    //See if user exist
-
-
-    //get users gravatar
-
-
-
-    //Encrypt password
-
-
-
-    //Return jsonwebtoken
-
-
-
-
-
-
-
-
-
-
-
 });
 
 module.exports = router;
