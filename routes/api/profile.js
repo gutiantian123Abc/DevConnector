@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
+const User = require('../../models/User');
 const { check, validationResult } = require('express-validator/check');
 
 // @route   GET api/profile/me
@@ -131,6 +132,24 @@ router.get('/user/:user_id', async (req, res) => {
     }
 });
 
+// @route   DELETE api/profile
+// @desc    Delete profile, user & posts
+// @access  Private
+router.delete('/', auth, async (req, res) => {
+    try{
+        //Remove Profile
+        await Profile.findOneAndRemove({user: req.user.id });
+        //Remove User
+        await User.findOneAndRemove({ _id: req.user.id });
+        return res.json({ msg: 'User deleted' });
+    } catch(err) {
+        console.error(err.message);
+        if(err.kind === 'ObjectId') {
+            return res.status(400).json({ msg: 'Profile not found'});
+        }
+        return res.status(500).send('Server Error');
+    }
+});
 
 
 
