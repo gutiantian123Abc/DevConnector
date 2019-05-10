@@ -1,0 +1,54 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add uuid
+
+PATH: 
+  /Users/xiangtiangu/anaconda3/bin:/sw/bin:/sw/sbin:/anaconda/bin:/usr/local/mysql/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Xamarin Workbooks.app/Contents/SharedSupport/path-bin
+
+Yarn version: 
+  1.15.2
+
+Node version: 
+  10.15.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EACCES: permission denied, mkdir '/Users/xiangtiangu/Desktop/FullStackNodeProject/DevConnector/server/node_modules/aproba'
+
+npm manifest: 
+  {
+    "name": "server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js",
+      "server": "nodemon index.js",
+      "client": "npm start --prefix client",
+      "dev": "concurrently \"npm run server\" \"npm run client\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "config": "^3.1.0",
+      "express": "^4.16.4",
+      "express-validator": "^5.3.1",
+      "gravatar": "^1.8.0",
+      "jsonwebtoken": "^8.5.1",
+      "latest-version": "^5.1.0",
+      "mongoose": "^5.5.5",
+      "request": "^2.88.0"
+    },
+    "devDependencies": {
+      "concurrently": "^4.1.0",
+      "nodemon": "^1.19.0"
+    },
+    "description": ""
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
